@@ -1,0 +1,24 @@
+name: Schedule
+on:
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    name: Run main script
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Run script
+        shell: bash
+        run: deno main.ts
