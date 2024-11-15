@@ -23,4 +23,4 @@ jobs:
 
       - name: Run script
         shell: bash
-        run: deno main.ts
+        run: deno src/main.ts
