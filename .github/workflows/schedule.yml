@@ -23,7 +23,7 @@ jobs:
 
       - name: Run script
         shell: bash
-        run: deno run --allow-net --allow-env --allow-net src/main.ts
+        run: deno run --allow-net --allow-read --allow-env src/main.ts
         env:
           PAGERDUTY_API_TOKEN: ${{ secrets.PAGERDUTY_API_TOKEN }}
           ESCALATION_POLICY_ID: ${{ secrets.ESCALATION_POLICY_ID }}
