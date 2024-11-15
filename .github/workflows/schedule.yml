@@ -21,6 +21,10 @@ jobs:
         with:
           deno-version: v2.x
 
+      - name: Install packages
+        shell: bash
+        run: deno install
+
       - name: Run script
         shell: bash
         run: deno run --allow-net --allow-read --allow-env src/main.ts
