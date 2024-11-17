@@ -5,7 +5,9 @@
     "jsr:@std/internal@^1.0.5": "1.0.5",
     "npm:@pagerduty/pdjs@*": "2.2.4",
     "npm:@types/node@*": "22.5.4",
-    "npm:axios@*": "1.7.7"
+    "npm:axios@*": "1.7.7",
+    "npm:luxon@*": "3.5.0",
+    "npm:ts-luxon@*": "5.0.7-beta.0"
   },
   "jsr": {
     "@std/assert@1.0.8": {
@@ -72,6 +74,9 @@
         "mime-types"
       ]
     },
+    "luxon@3.5.0": {
+      "integrity": "sha512-rh+Zjr6DNfUYR3bPwJEnuwDdqMbxZW7LOQfUN4B54+Cl+0o5zaU9RJ6bcidfDtC1cWCZXQ+nvX8bf6bAji37QQ=="
+    },
     "mime-db@1.52.0": {
       "integrity": "sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg=="
     },
@@ -92,6 +97,9 @@
     },
     "tr46@0.0.3": {
       "integrity": "sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw=="
+    },
+    "ts-luxon@5.0.7-beta.0": {
+      "integrity": "sha512-mmBCXl8MXqeZ24pKcdORJShvgSNq9Eb7MD5++w+/gjERu8yJn02mhpDf/gDK9YAZiWuppRLivgPV1ipRjlFuvg=="
     },
     "undici-types@6.19.8": {
       "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="

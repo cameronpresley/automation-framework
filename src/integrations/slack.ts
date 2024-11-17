@@ -1,7 +1,7 @@
 import { getEnvValueOrThrow } from "../utils.ts";
 
 export async function getMentionTokenForEmail(email: string): Promise<string> {
-  const apiToken = Deno.env.get("SLACK_OAUTH_TOKEN");
+  const apiToken = getEnvValueOrThrow("SLACK_OAUTH_TOKEN");
   const headers = new Headers();
   headers.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -26,8 +26,10 @@ export class MessageBuilder {
     this.content.push(line);
     return this;
   }
-  addMention(line: string, token: string): MessageBuilder {
-    this.content.push(line.replace("***PLACEHOLDER***", `<@${token}>`));
+  addMention(placeholder: string, token: string): MessageBuilder {
+    this.content = this.content.map((x) =>
+      x.replaceAll(placeholder, `<@${token}>`)
+    );
     return this;
   }
   build() {
@@ -52,21 +54,12 @@ export class MessageBuilder {
   }
 }
 
-export async function sendMessage(
-  messageBuilder: MessageBuilder
-): Promise<void> {
+export async function sendMessage(builder: MessageBuilder): Promise<void> {
   const webhook = getEnvValueOrThrow("SLACK_WEB_HOOK");
+
   await fetch(webhook, {
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(messageBuilder.build()),
+    body: JSON.stringify(builder.build()),
     method: "post",
   });
-
-  // await fetch(webhook, {
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({
-  //     text: "Hello y'all! <!channel>",
-  //   }),
-  //   method: "post",
-  // });
 }
