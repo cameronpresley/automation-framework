@@ -1,4 +1,4 @@
-name: Schedule
+name: Coffee Chat
 on:
   workflow_dispatch:
   schedule:
