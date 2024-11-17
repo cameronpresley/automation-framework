@@ -42,13 +42,13 @@ export class MessageBuilder {
             text: this.title,
           },
         },
-        ...this.content.map((c) => ({
+        {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: c,
+            text: this.content.join("\n"),
           },
-        })),
+        },
       ],
     };
   }
@@ -57,9 +57,14 @@ export class MessageBuilder {
 export async function sendMessage(builder: MessageBuilder): Promise<void> {
   const webhook = getEnvValueOrThrow("SLACK_WEB_HOOK");
 
-  await fetch(webhook, {
+  const resp = await fetch(webhook, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(builder.build()),
     method: "post",
   });
+  if (resp.status > 300) {
+    console.log("failed with a " + resp.status);
+    const data = await resp.text();
+    console.log(data);
+  }
 }

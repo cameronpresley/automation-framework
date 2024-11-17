@@ -1,8 +1,10 @@
 import { getMembersOfOrganization } from "./integrations/github.ts";
 import { MessageBuilder, sendMessage } from "./integrations/slack.ts";
-import { createShuffledPairs } from "./utils.ts";
+import { createShuffledPairs, getEnvValueOrThrow } from "./utils.ts";
 
-const result = await getMembersOfOrganization("SmallBatchSoftware");
+const result = await getMembersOfOrganization(
+  getEnvValueOrThrow("GITHUB_ORG_NAME")
+);
 const shuffledPairs = createShuffledPairs(result);
 
 const builder = shuffledPairs.reduce((prev: MessageBuilder, curr) => {

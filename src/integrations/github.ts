@@ -33,3 +33,13 @@ export async function getMembersOfOrganization(
       } as OrgMember)
   );
 }
+
+export async function cloneRepository(
+  repoUrl: string,
+  location: string
+): Promise<void> {
+  const command = new Deno.Command("git", {
+    args: [`clone`, `${repoUrl}`, `${location}`],
+  });
+  await command.output();
+}
