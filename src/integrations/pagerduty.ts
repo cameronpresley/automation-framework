@@ -67,7 +67,6 @@ export async function getOnCallInformation(
     throw new Error("couldn't find token");
   }
 
-
   const pd = api({ token: apiToken });
 
   const policy = (await pd.get(`/escalation_policies/${escalationPolicy}`)).data
@@ -86,5 +85,4 @@ export async function getOnCallInformation(
 
   const user = await pd.get("/users/" + onCallUserId);
   return { email: user.data.user.email, name: user.data.user.name };
-
 }

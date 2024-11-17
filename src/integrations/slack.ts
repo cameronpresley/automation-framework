@@ -55,21 +55,18 @@ export class MessageBuilder {
 export async function sendMessage(
   messageBuilder: MessageBuilder
 ): Promise<void> {
-  //const webhook = Deno.env.get("SLACK_WEB_HOOK")!;
-  // const resp = await fetch(webhook, {
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify(messageBuilder.build()),
-  //   method: "post",
-  // });
-  // console.log(resp);
-
-  const webhook = getEnvValueOrThrow('SLACK_WEB_HOOK');
-
+  const webhook = getEnvValueOrThrow("SLACK_WEB_HOOK");
   await fetch(webhook, {
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      text: "Hello y'all!",
-    }),
+    body: JSON.stringify(messageBuilder.build()),
     method: "post",
   });
+
+  // await fetch(webhook, {
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify({
+  //     text: "Hello y'all! <!channel>",
+  //   }),
+  //   method: "post",
+  // });
 }
