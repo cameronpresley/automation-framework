@@ -1,7 +1,7 @@
 import { getEnvValueOrThrow } from "../utils.ts";
 
 export async function getMentionTokenForEmail(email: string): Promise<string> {
-  const apiToken = Deno.env.get("SLACK_OAUTH_TOKEN");
+  const apiToken = getEnvValueOrThrow("SLACK_OAUTH_TOKEN");
   const headers = new Headers();
   headers.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -26,8 +26,10 @@ export class MessageBuilder {
     this.content.push(line);
     return this;
   }
-  addMention(line: string, token: string): MessageBuilder {
-    this.content.push(line.replace("***PLACEHOLDER***", `<@${token}>`));
+  addMention(placeholder: string, token: string): MessageBuilder {
+    this.content = this.content.map((x) =>
+      x.replaceAll(placeholder, `<@${token}>`)
+    );
     return this;
   }
   build() {
@@ -40,36 +42,29 @@ export class MessageBuilder {
             text: this.title,
           },
         },
-        ...this.content.map((c) => ({
+        {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: c,
+            text: this.content.join("\n"),
           },
-        })),
+        },
       ],
     };
   }
 }
 
-export async function sendMessage(
-  messageBuilder: MessageBuilder
-): Promise<void> {
-  //const webhook = Deno.env.get("SLACK_WEB_HOOK")!;
-  // const resp = await fetch(webhook, {
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify(messageBuilder.build()),
-  //   method: "post",
-  // });
-  // console.log(resp);
+export async function sendMessage(builder: MessageBuilder): Promise<void> {
+  const webhook = getEnvValueOrThrow("SLACK_WEB_HOOK");
 
-  const webhook = getEnvValueOrThrow('SLACK_WEB_HOOK');
-
-  await fetch(webhook, {
+  const resp = await fetch(webhook, {
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      text: "Hello y'all!",
-    }),
+    body: JSON.stringify(builder.build()),
     method: "post",
   });
+  if (resp.status > 300) {
+    console.log("failed with a " + resp.status);
+    const data = await resp.text();
+    console.log(data);
+  }
 }

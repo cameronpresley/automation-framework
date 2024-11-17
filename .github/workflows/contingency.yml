@@ -1,0 +1,33 @@
+name: Contingency Plan Review
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 8 * * 3 # Runs at 8:00am UTC on Wednesdays
+
+jobs:
+  run-script:
+    name: Run script
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Install packages
+        shell: bash
+        run: deno install
+
+      - name: Run script
+        shell: bash
+        run: deno run --allow-net --allow-read --allow-env --allow-run src/contigency.ts
+        env:
+          GIT_REPO_URL: ${{ vars.GITHUB_ORG_NAME }}
+          SLACK_WEB_HOOK: ${{ secrets.BATMAN_SLACK_WEB_HOOK }}
